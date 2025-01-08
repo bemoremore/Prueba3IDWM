@@ -29,5 +29,6 @@ Antes de ejecutar este proyecto, asegúrate de contar con los siguientes element
 ## Build
 
 - **Inicia el servidor de desarrollo:**
+    ```bash
     dotnet run
 
