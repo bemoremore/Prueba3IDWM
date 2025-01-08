@@ -144,3 +144,4 @@ C:\Users\byron\Desktop\Prueba3_Backend\obj\Debug\net8.0\refint\Prueba3_Backend.d
 C:\Users\byron\Desktop\Prueba3_Backend\obj\Debug\net8.0\Prueba3_Backend.pdb
 C:\Users\byron\Desktop\Prueba3_Backend\obj\Debug\net8.0\Prueba3_Backend.genruntimeconfig.cache
 C:\Users\byron\Desktop\Prueba3_Backend\obj\Debug\net8.0\ref\Prueba3_Backend.dll
+C:\Users\byron\Desktop\Prueba3_Backend\obj\Debug\net8.0\Prueba3_Backend.sourcelink.json

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Prueba3_Backend.src.Dtos.UserDtos;
@@ -25,8 +26,10 @@ namespace Prueba3_Backend.src.Controllers
             try {
                 var response = await _userRepository.LoginAsync(userDto);
                 return Ok(response);
+            } catch (AuthenticationException e) {
+                return StatusCode(401, new { Error = e.Message });
             } catch (Exception e) {
-                return StatusCode(401, "Error: " + e.Message);
+                return StatusCode(500, new { Error = e.Message });
             }
             
         }

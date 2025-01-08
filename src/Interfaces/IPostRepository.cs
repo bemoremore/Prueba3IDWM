@@ -12,6 +12,6 @@ namespace Prueba3_Backend.src.Interfaces
     {
         Task<Post> CreatePost(PostDto postDto, string userId);
 
-        Task<List<Post>> GetPosts();
+        Task<List<PostGetDto>> GetPosts();
     }
 }

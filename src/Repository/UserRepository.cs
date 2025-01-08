@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Prueba3_Backend.src.Dtos.UserDtos;
@@ -28,14 +29,14 @@ namespace Prueba3_Backend.src.Repository
 
             if (user == null)
             {
-                throw new Exception("Usuario no encontrado");
+                throw new AuthenticationException("Usuario no encontrado");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, userDto.Password, false);
 
             if (!result.Succeeded)
             {
-                throw new Exception("Contraseña incorrecta");
+                throw new AuthenticationException("Contraseña incorrecta");
             }
 
             return new TokenUserDto

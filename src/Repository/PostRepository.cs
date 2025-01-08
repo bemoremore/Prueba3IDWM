@@ -25,11 +25,12 @@ namespace Prueba3_Backend.src.Repository
             _cloudinary = cloudinary;
         }
 
-        public async Task<Post> CreatePost(PostDto postDto, string userId)
+        public async Task<Post> CreatePost(PostDto postDto, string userEmail)
         {
             try {
                 
-                var user = await _context.Users.FindAsync(userId);
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email == userEmail);
                 if (user == null)
                 {
                     throw new Exception("User not found.");
@@ -49,13 +50,12 @@ namespace Prueba3_Backend.src.Repository
                     throw new Exception("Image must be a JPEG or PNG file");
                 }
 
-                // Validar si la imagen no excede el límite de 5MB
-                if (postDto.Image.Length > 5 * 1024 * 1024) // 5MB limit
+                
+                if (postDto.Image.Length > 5 * 1024 * 1024) 
                 {
                     throw new Exception("Image must be less than 5MB");
                 }
 
-                // Subir imagen a Cloudinary
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(postDto.Image.FileName, postDto.Image.OpenReadStream()),
@@ -64,13 +64,11 @@ namespace Prueba3_Backend.src.Repository
 
                 var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
-                // Verificar si hubo un error al subir la imagen
                 if (uploadResult.Error != null)
                 {
                     throw new Exception(uploadResult.Error.Message);
                 }
 
-                // Crear el nuevo post
                 var post = new Post
                 {
                     Title = postDto.Title,
@@ -79,8 +77,6 @@ namespace Prueba3_Backend.src.Repository
                     UserIdPost = user.Id,
                     User = user
                 };
-
-                // Guardar el nuevo post
                 await _context.Posts.AddAsync(post);
                 await _context.SaveChangesAsync();
 
@@ -90,9 +86,19 @@ namespace Prueba3_Backend.src.Repository
             }
         }
 
-        public async Task<List<Post>> GetPosts()
+        public async Task<List<PostGetDto>> GetPosts()
         {
-            var posts = await _context.Posts.ToListAsync();
+            var posts = await _context.Posts
+                .Include(p => p.User)
+                .Select(p => new PostGetDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    PublicationDate = p.PublicationDate,
+                    URL = p.URL,
+                    UserEmail = p.User.Email!
+                })
+                .ToListAsync();
 
             if (posts == null| posts!.Count == 0)
             {
