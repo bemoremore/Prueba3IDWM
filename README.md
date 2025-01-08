@@ -27,6 +27,7 @@ Antes de ejecutar este proyecto, asegúrate de contar con los siguientes element
     dotnet ef database update
     
 ## Build
-    
+
+- **Inicia el servidor de desarrollo:**
     dotnet run
 
